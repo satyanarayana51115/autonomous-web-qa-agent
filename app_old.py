@@ -1,0 +1,92 @@
+import streamlit as st
+import os
+import json
+from src.scanner import WebScanner
+from src.ai_tester import AITester
+from src.test_runner import TestRunner
+
+st.set_page_config(
+    page_title="Autonomous Web QA Agent",
+    page_icon="🧪",
+    layout="wide"
+)
+
+st.title("🧪 Autonomous Web QA & Self-Healing Testing Agent")
+st.markdown("Zero-Scripting Autonomous Testing Suite powered by **Playwright + Pytest + Gemini Reasoning**.")
+
+# Sidebar Configuration
+with st.sidebar:
+    st.header("⚙️ Configuration")
+    target_url = st.text_input(
+        "Target Website URL:",
+        value="https://example.com",
+        help="Enter the full URL including https://"
+    )
+    headless_mode = st.checkbox("Headless Browser Mode", value=True)
+    run_btn = st.button("🚀 Run Autonomous Test Suite", type="primary", use_container_width=True)
+
+if run_btn:
+    if not target_url:
+        st.error("Please enter a valid target URL.")
+    else:
+        scanner = WebScanner(headless=headless_mode)
+        tester = AITester()
+        runner = TestRunner()
+
+        col1, col2 = st.columns([1, 1])
+
+        # Step 1: Autonomous Discovery (Page Scanning)
+        with st.status("🔍 Scanning Website & Extracting DOM...", expanded=True) as status:
+            st.write("Navigating target URL via Playwright and inspecting interactive elements...")
+            try:
+                scan_data = scanner.inspect_page(target_url)
+                st.write(f"Page Title: **{scan_data['title']}**")
+                st.write(f"Interactive Elements Detected: **{scan_data['elements_count']}**")
+            except Exception as e:
+                st.error(f"Page scanning failed: {e}")
+                st.stop()
+
+            # Step 2: AI Test Generation
+            st.write("🤖 Generating resilient Pytest script using Gemini...")
+            try:
+                test_code = tester.generate_test_suite(
+                    url=scan_data["url"],
+                    page_title=scan_data["title"],
+                    elements=scan_data["elements"]
+                )
+            except Exception as e:
+                st.error(f"Test generation failed: {e}")
+                st.stop()
+
+            # Step 3: Test Execution
+            st.write("⚡ Executing generated tests via Pytest runner...")
+            run_result = runner.save_and_run_test(test_code)
+
+            # Step 4: Self-Healing Mechanism (If Test Fails)
+            if not run_result["passed"]:
+                st.warning("⚠️ Test assertion failed. Initiating Self-Healing Agent...")
+                healed_code = tester.heal_broken_test(
+                    failed_code=test_code,
+                    error_trace=run_result["stderr"] + "\n" + run_result["stdout"],
+                    current_dom_elements=scan_data["elements"]
+                )
+                st.write("🔄 Re-executing suite with healed locators...")
+                run_result = runner.save_and_run_test(healed_code)
+                test_code = healed_code
+
+            status.update(label="✅ Autonomous QA Pipeline Completed!", state="complete", expanded=False)
+
+        # Output Display Columns
+        with col1:
+            st.subheader("📊 Execution Results")
+            if run_result["passed"]:
+                st.success("✅ All Generated Test Cases Passed Successfully (100% Passed)!")
+            else:
+                st.error("❌ Test suite execution failed. Review execution trace below.")
+
+            with st.expander("View Raw Pytest Terminal Output", expanded=True):
+                st.code(run_result["stdout"] if run_result["stdout"] else run_result["stderr"], language="text")
+
+        with col2:
+            st.subheader("📝 Autonomous Pytest Code")
+            st.code(test_code, language="python")
