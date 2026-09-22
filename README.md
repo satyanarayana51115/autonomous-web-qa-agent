@@ -18,6 +18,8 @@ Web test automation historically suffers from high test maintenance overhead, br
 
 ## ⚙️ Core Architecture & Agentic Workflow
 
+```text
+
 [ Target URL ]
 │
 ▼
@@ -40,14 +42,19 @@ Web test automation historically suffers from high test maintenance overhead, br
 ▼
 [ Re-execution Suite ] ──► Verified Green Execution
 
+```
 ---
 
 ## 🚀 Key Technical Features
 
 * **Autonomous Dynamic Discovery:** Playwright dynamically scans client-side single-page applications (SPAs) and traditional DOM trees, filtering high-value interactable elements (buttons, inputs, dropdowns, forms).
+
 * **Self-Healing AST & Locators:** When DOM changes break conventional automation, the Self-Healing mechanism analyzes stdout/stderr traces against the live DOM state, repairing selectors on the fly.
+
 * **Deterministic Test Execution:** Generates clean, isolated Pytest scripts with explicit assertions rather than unreliable flaky simulations.
+
 * **Configurable Execution Modes:** Supports full Headless CI/CD testing mode alongside Headed execution with calibrated `slow_mo` throttling for visual observability and live debugging.
+
 * **Modular Streamlit Cockpit:** Centralized real-time monitoring console displaying live DOM extraction status, dynamic code generation, and low-level Pytest execution logs.
 
 ---
@@ -55,10 +62,15 @@ Web test automation historically suffers from high test maintenance overhead, br
 ## 🛠️ Tech Stack & Dependencies
 
 * **Language Engine:** Python 3.11+
+
 * **Browser Automation:** Playwright (Chromium/WebKit/Firefox)
+
 * **Testing Framework:** Pytest Runner
+
 * **AI Cognitive Engine:** Google Gemini SDK (`google-genai`)
+
 * **DOM Normalization:** BeautifulSoup4 (HTML Parsing)
+
 * **Visualization Layer:** Streamlit Dashboard
 
 ---
@@ -97,11 +109,11 @@ cd autonomous-web-qa-agent
 ```
 python -m venv .venv
 ```
-### On Windows 
+**On Windows** 
 ```
 .venv\Scripts\activate
 ```
-### On macOS/Linux
+**On macOS/Linux**
 ```
 source .venv/bin/activate  
 ```
@@ -138,7 +150,10 @@ streamlit run app.py
 ## 👤 Author & Architecture Inquiries
 
 * **Developer:** Satyanarayana
+
 * **​Role:** AI & Workflow Automation Engineer
+
 * **​GitHub:** @satyanarayana51115
+
 * **​LinkedIn:** Connect on LinkedIn
 
