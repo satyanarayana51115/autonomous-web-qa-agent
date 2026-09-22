@@ -13,7 +13,7 @@ class AITester:
     def __init__(self):
         api_key = os.getenv("GEMINI_API_KEY")
         self.client = genai.Client(api_key=api_key)
-        self.model_name = "gemini-3.5-flash"
+        self.model_name = "gemini-3.6-flash"
 
     def _call_model_with_retry(self, prompt: str, max_retries: int = 4) -> str:
         """503 తాత్కాలిక సర్వర్ ట్రాఫిక్ వస్తే వేచి చూసి మళ్లీ ప్రయత్నించే పటిష్టమైన లాజిక్"""

@@ -16,6 +16,12 @@ Web test automation historically suffers from high test maintenance overhead, br
 
 ---
 
+## 🖥️ Live Observability Cockpit
+
+![Autonomous Web QA Dashboard](assets/dark_mode.png)
+
+---
+
 ## ⚙️ Core Architecture & Agentic Workflow
 
 ```text
@@ -78,7 +84,11 @@ Web test automation historically suffers from high test maintenance overhead, br
 ## 📂 Project Structure
 
 ```bash
+
 autonomous-web-qa-agent/
+│
+├── assets/
+│   └── dark_mode.png       # Dark mode UI dashboard preview
 │
 ├── src/
 │   ├── __init__.py
