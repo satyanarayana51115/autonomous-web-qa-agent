@@ -45,9 +45,19 @@ class AITester:
 
         Write a concise, resilient Pytest script using playwright.sync_api.
         Rules:
-        1. Test function name: `test_autonomous_generated_suite(page)`.
-        2. Assert page title or presence of primary elements.
-        3. Return ONLY raw Python code without markdown blocks or backticks.
+        1. Test function signature: `def test_autonomous_generated_suite(page):`.
+        2. First line: `page.goto("{url}")`.
+        3. Do NOT use page.fill(). To make typing visible on screen, MUST use:
+           - `page.locator("#username").click()`
+           - `page.keyboard.type("tomsmith", delay=150)`
+           - `page.wait_for_timeout(1000)`
+           - `page.locator("#password").click()`
+           - `page.keyboard.type("SuperSecretPassword!", delay=150)`
+           - `page.wait_for_timeout(1000)`
+        4. Click submit:
+           - `page.locator("button[type='submit']").click()`
+           - `page.wait_for_timeout(4000)`
+        5. Return ONLY executable raw Python code without markdown blocks or backticks.
         """
         return self._call_model_with_retry(prompt)
 
